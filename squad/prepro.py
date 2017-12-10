@@ -19,9 +19,9 @@ def main():
 def get_args():
     parser = argparse.ArgumentParser()
     home = os.path.expanduser("~")
-    source_dir = os.path.join(home, "data", "squad")
-    target_dir = "data/squad"
-    glove_dir = os.path.join(home, "data", "glove")
+    source_dir = os.path.join(home, "data_pos", "squad")
+    target_dir = "data_pos/squad"
+    glove_dir = os.path.join(home, "data_pos", "glove")
     parser.add_argument('-s', "--source_dir", default=source_dir)
     parser.add_argument('-t', "--target_dir", default=target_dir)
     parser.add_argument('-d', "--debug", action='store_true')
@@ -85,6 +85,7 @@ def get_word2vec(args, word_counter):
     glove_path = os.path.join(args.glove_dir, "glove.{}.{}d.txt".format(args.glove_corpus, args.glove_vec_size))
     sizes = {'6B': int(4e5), '42B': int(1.9e6), '840B': int(2.2e6), '2B': int(1.2e6)}
     total = sizes[args.glove_corpus]
+    total = 1.8e7
     word2vec_dict = {}
     with open(glove_path, 'r', encoding='utf-8') as fh:
         for line in tqdm(fh, total=total):
