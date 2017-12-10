@@ -1,10 +1,12 @@
 import re
-
+import nltk
 
 def get_2d_spans(text, tokenss):
     spanss = []
     cur_idx = 0
     for tokens in tokenss:
+        tokens = tokens.split("_")
+        tokens = "_".join(tokens[0:-1])
         spans = []
         for token in tokens:
             if text.find(token, cur_idx) < 0:
@@ -66,8 +68,8 @@ def get_word_idx(context, wordss, idx):
     spanss = get_2d_spans(context, wordss)
     return spanss[idx[0]][idx[1]][0]
 
+def process_tokens_tags(temp_tokens):
 
-def process_tokens(temp_tokens):
     tokens = []
     for token in temp_tokens:
         flag = False
@@ -76,6 +78,23 @@ def process_tokens(temp_tokens):
         # l = ("-", "\u2212", "\u2014", "\u2013")
         # l = ("\u2013",)
         tokens.extend(re.split("([{}])".format("".join(l)), token))
+    tokens_tmp = [x if x != '' else ' ' for x in tokens]
+    tags = nltk.pos_tag(tokens_tmp)
+    tag_tokens = [(x[0] + '_' + x[1]).strip() for x in tags]
+
+    return tag_tokens
+
+def process_tokens(temp_tokens):
+
+    tokens = []
+    for token in temp_tokens:
+        flag = False
+        l = ("-", "\u2212", "\u2014", "\u2013", "/", "~", '"', "'", "\u201C", "\u2019", "\u201D", "\u2018", "\u00B0")
+        # \u2013 is en-dash. Used for number to nubmer
+        # l = ("-", "\u2212", "\u2014", "\u2013")
+        # l = ("\u2013",)
+        tokens.extend(re.split("([{}])".format("".join(l)), token))
+
     return tokens
 
 

@@ -8,7 +8,7 @@ from collections import Counter
 
 from tqdm import tqdm
 
-from squad.utils import get_word_span, get_word_idx, process_tokens
+from squad.utils import get_word_span, get_word_idx, process_tokens, process_tokens_tags
 
 
 def main():
@@ -145,8 +145,14 @@ def prepro_each(args, data_type, start_ratio=0.0, stop_ratio=1.0, out_name="defa
             context = context.replace("``", '" ')
             xi = list(map(word_tokenize, sent_tokenize(context)))
             xi = [process_tokens(tokens) for tokens in xi]  # process tokens
+
+            tokens_tmp = [x if x != '' else ' ' for x in xi[0]]
+            tags = nltk.pos_tag(tokens_tmp)
+            tags = [(x[0] + '_' + x[1]).strip() for x in tags]
+
             # given xi, add chars
             cxi = [[list(xijk) for xijk in xij] for xij in xi]
+            xi = tags
             xp.append(xi)
             cxp.append(cxi)
             pp.append(context)
@@ -155,6 +161,8 @@ def prepro_each(args, data_type, start_ratio=0.0, stop_ratio=1.0, out_name="defa
                 for xijk in xij:
                     word_counter[xijk] += len(para['qas'])
                     lower_word_counter[xijk.lower()] += len(para['qas'])
+                    xijk = xijk.split("_")
+                    xijk = "_".join(xijk[0:-1])
                     for xijkl in xijk:
                         char_counter[xijkl] += len(para['qas'])
 
@@ -164,7 +172,13 @@ def prepro_each(args, data_type, start_ratio=0.0, stop_ratio=1.0, out_name="defa
             for qa in para['qas']:
                 # get words
                 qi = word_tokenize(qa['question'])
+
+                tokens_tmp = [x if x != '' else ' ' for x in qi]
+                tags = nltk.pos_tag(tokens_tmp)
+                tag_tokens = [(x[0] + '_' + x[1]).strip() for x in tags]
+
                 cqi = [list(qij) for qij in qi]
+                qi = tag_tokens
                 yi = []
                 cyi = []
                 answers = []
@@ -197,6 +211,8 @@ def prepro_each(args, data_type, start_ratio=0.0, stop_ratio=1.0, out_name="defa
                 for qij in qi:
                     word_counter[qij] += 1
                     lower_word_counter[qij.lower()] += 1
+                    qij = qij.split("_")
+                    qij = "_".join(qij[0:-1])
                     for qijk in qij:
                         char_counter[qijk] += 1
 
