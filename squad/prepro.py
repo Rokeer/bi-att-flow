@@ -147,9 +147,11 @@ def prepro_each(args, data_type, start_ratio=0.0, stop_ratio=1.0, out_name="defa
             xi = list(map(word_tokenize, sent_tokenize(context)))
             xi = [process_tokens(tokens) for tokens in xi]  # process tokens
 
-            tokens_tmp = [x if x != '' else ' ' for x in xi[0]]
-            tags = nltk.pos_tag(tokens_tmp)
-            tags = [(x[0] + '_' + x[1]).strip() for x in tags]
+            tags = []
+            for xt in xi:
+                tokens_tmp = [x if x != '' else ' ' for x in xt]
+                ttags = nltk.pos_tag(tokens_tmp)
+                tags.append([(x[0] + '_' + x[1]).strip() for x in ttags])
 
             # given xi, add chars
             cxi = [[list(xijk) for xijk in xij] for xij in xi]
@@ -173,6 +175,9 @@ def prepro_each(args, data_type, start_ratio=0.0, stop_ratio=1.0, out_name="defa
             for qa in para['qas']:
                 # get words
                 qi = word_tokenize(qa['question'])
+
+
+
 
                 tokens_tmp = [x if x != '' else ' ' for x in qi]
                 tags = nltk.pos_tag(tokens_tmp)
