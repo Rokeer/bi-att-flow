@@ -5,10 +5,11 @@ def get_2d_spans(text, tokenss):
     spanss = []
     cur_idx = 0
     for tokens in tokenss:
-        tokens = tokens.split("_")
-        tokens = "_".join(tokens[0:-1])
+
         spans = []
         for token in tokens:
+            token = token.split("_")
+            token = "_".join(token[0:-1])
             if text.find(token, cur_idx) < 0:
                 print(tokens)
                 print("{} {} {}".format(token, cur_idx, text))
