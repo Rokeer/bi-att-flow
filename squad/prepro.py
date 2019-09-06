@@ -19,9 +19,9 @@ def main():
 def get_args():
     parser = argparse.ArgumentParser()
     home = os.path.expanduser("~")
-    source_dir = os.path.join(home, "data_pos", "squad")
-    target_dir = "data_pos/squad"
-    glove_dir = os.path.join(home, "data_pos", "glove")
+    source_dir = os.path.join(home, "data", "squad")
+    target_dir = "data/squad"
+    glove_dir = os.path.join(home, "data", "glove")
     parser.add_argument('-s', "--source_dir", default=source_dir)
     parser.add_argument('-t', "--target_dir", default=target_dir)
     parser.add_argument('-d', "--debug", action='store_true')
@@ -205,7 +205,7 @@ def prepro_each(args, data_type, start_ratio=0.0, stop_ratio=1.0, out_name="defa
                     i1 = get_word_idx(context, xi, (yi1[0], yi1[1]-1))
                     cyi0 = answer_start - i0
                     cyi1 = answer_stop - i1 - 1
-                    # print(answer_text, w0[cyi0:], w1[:cyi1+1])
+                    print(answer_text, w0[cyi0:], w1[:cyi1+1])
                     assert answer_text[0] == w0[cyi0], (answer_text, w0, cyi0)
                     assert answer_text[-1] == w1[cyi1]
                     assert cyi0 < 32, (answer_text, w0)

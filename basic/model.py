@@ -55,6 +55,8 @@ class Model(object):
         # Loss outputs
         self.loss = None
 
+        self.see = None
+
         self._build_forward()
         self._build_loss()
         self.var_ema = None

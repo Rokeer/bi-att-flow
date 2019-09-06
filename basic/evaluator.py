@@ -283,6 +283,7 @@ class F1Evaluator(LabeledEvaluator):
                 return ""
             if len(xi[span[0][0]]) <= span[1][1]:
                 return ""
+            print(span)
             return get_phrase(context, xi, span)
 
         id2answer_dict = {id_: _get2(context, xi, span)

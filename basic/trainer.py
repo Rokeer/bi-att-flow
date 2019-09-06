@@ -44,6 +44,7 @@ class MultiGPUTrainer(object):
         self.global_step = model.get_global_step()
         self.summary = model.summary
         self.models = models
+        self.x = model.x
         losses = []
         grads_list = []
         for gpu_idx, model in enumerate(models):
@@ -68,6 +69,6 @@ class MultiGPUTrainer(object):
             loss, summary, train_op = \
                 sess.run([self.loss, self.summary, self.train_op], feed_dict=feed_dict)
         else:
-            loss, train_op = sess.run([self.loss, self.train_op], feed_dict=feed_dict)
+            loss, train_op, x = sess.run([self.loss, self.train_op, self.x], feed_dict=feed_dict)
             summary = None
         return loss, summary, train_op

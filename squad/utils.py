@@ -49,6 +49,8 @@ def get_phrase(context, wordss, span):
     char_idx = 0
     char_start, char_stop = None, None
     for word_idx, word in enumerate(words):
+        word = word.split("_")
+        word = "_".join(word[0:-1])
         char_idx = context.find(word, char_idx)
         assert char_idx >= 0
         if word_idx == flat_start:
